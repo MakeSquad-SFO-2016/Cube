@@ -1,14 +1,11 @@
-//
-//  ChatLogController.swift
-//  gameofchats
-//
-//  Created by Brian Voong on 7/7/16.
-//  Copyright © 2016 letsbuildthatapp. All rights reserved.
-//
 
 import UIKit
 import Firebase
-
+import FirebaseMessaging
+import SwiftyJSON
+import Alamofire
+import MobileCoreServices
+import JSQMessagesViewController
 class ChatLogController: UICollectionViewController, UITextFieldDelegate, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var user: User? {
@@ -37,6 +34,11 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
                     return
                 }
                 
+                //                var verdad: Bool = true
+                //
+                //                vato.isFriendly = false
+                //                ese.noEsFriendly = verdad
+                
                 self.messages.append(Message(dictionary: dictionary))
                 dispatch_async(dispatch_get_main_queue(), {
                     self.collectionView?.reloadData()
@@ -51,7 +53,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
     
     lazy var inputTextField: UITextField = {
-        let textField = UITextField()
+        var textField = UITextField()
         textField.placeholder = "Enter message..."
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.delegate = self
@@ -62,11 +64,14 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        let translateMessageToEnglishButton = UIBarButtonItem(title: "🇲🇽💯", style: .Plain, target: self, action: #selector(ChatLogController.translateToEnglish))
+        // let preferred over var here
+        navigationItem.rightBarButtonItem = translateMessageToEnglishButton
+
         collectionView?.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
-//        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
+        //        collectionView?.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 50, right: 0)
         collectionView?.alwaysBounceVertical = true
-        collectionView?.backgroundColor = UIColor.whiteColor()
+        collectionView?.backgroundColor = UIColor.blackColor()
         collectionView?.registerClass(ChatMessageCell.self, forCellWithReuseIdentifier: cellId)
         
         collectionView?.keyboardDismissMode = .Interactive
@@ -92,7 +97,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         uploadImageView.heightAnchor.constraintEqualToConstant(44).active = true
         
         let sendButton = UIButton(type: .System)
-        sendButton.setTitle("Send", forState: .Normal)
+        sendButton.setTitle("🇺🇸💯", forState: .Normal)
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.addTarget(self, action: #selector(handleSend), forControlEvents: .TouchUpInside)
         containerView.addSubview(sendButton)
@@ -172,7 +177,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         dismissViewControllerAnimated(true, completion: nil)
     }
-    
+
     override var inputAccessoryView: UIView? {
         get {
             return inputContainerView
@@ -186,9 +191,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     func setupKeyboardObservers() {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardDidShow), name: UIKeyboardDidShowNotification, object: nil)
         
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
-//        
-//        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
+        //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillShow), name: UIKeyboardWillShowNotification, object: nil)
+        //
+        //        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(handleKeyboardWillHide), name: UIKeyboardWillHideNotification, object: nil)
     }
     
     func handleKeyboardDidShow() {
@@ -209,7 +214,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let keyboardDuration = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey]?.doubleValue
         
         containerViewBottomAnchor?.constant = -keyboardFrame!.height
-        UIView.animateWithDuration(keyboardDuration!) { 
+        UIView.animateWithDuration(keyboardDuration!) {
             self.view.layoutIfNeeded()
         }
     }
@@ -261,8 +266,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             
         } else {
             //incoming gray
-            cell.bubbleView.backgroundColor = UIColor(r: 240, g: 240, b: 240)
-            cell.textView.textColor = UIColor.blackColor()
+            cell.bubbleView.backgroundColor = UIColor.redColor()
+            cell.textView.textColor = UIColor.whiteColor()
             cell.profileImageView.hidden = false
             
             cell.bubbleViewRightAnchor?.active = false
@@ -314,57 +319,228 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     func handleSend() {
         let properties = ["text": inputTextField.text!]
         sendMessageWithProperties(properties)
+        //here
     }
     
     private func sendMessageWithImageUrl(imageUrl: String, image: UIImage) {
         let properties: [String: AnyObject] = ["imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height]
         sendMessageWithProperties(properties)
     }
-    
     private func sendMessageWithProperties(properties: [String: AnyObject]) {
-        let ref = FIRDatabase.database().reference().child("messages")
-        let childRef = ref.childByAutoId()
-        let toId = user!.id!
-        let fromId = FIRAuth.auth()!.currentUser!.uid
-        let timestamp: NSNumber = Int(NSDate().timeIntervalSince1970)
+        let escape = ["á" : "a"]
+        let Eescape = ["é" : "e"]
+        let  text = inputTextField.text
+        //let date = NSDate()
+        let message = inputTextField.text?.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         
-        var values: [String: AnyObject] = ["toId": toId, "fromId": fromId, "timestamp": timestamp]
-        
-        //append properties dictionary onto values somehow??
-        //key $0, value $1
-        properties.forEach({values[$0] = $1})
-        
-        childRef.updateChildValues(values) { (error, ref) in
-            if error != nil {
-                print(error)
-                return
+        // what does this line do?
+        var messageForURL = ""
+        //        does a for loop duhhhhhhh
+        //         what does this line do?
+        print("-------------------")
+        print(text)
+        for character in message!.characters {
+            // what does this line do?
+            if character == " " {
+                // literally gives %20 cause that stands for a space in a url link
+                // what does this line do?
+                messageForURL += "%20"
+                // what does this line do?
             }
-            
-            self.inputTextField.text = nil
-            
-            let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId).child(toId)
-            
-            let messageId = childRef.key
-            userMessagesRef.updateChildValues([messageId: 1])
-            
-            let recipientUserMessagesRef = FIRDatabase.database().reference().child("user-messages").child(toId).child(fromId)
-            recipientUserMessagesRef.updateChildValues([messageId: 1])
+                // what does this line do?
+            else {
+                //append means to add to the chars
+                // what does this line do?
+                messageForURL.append(character)
+                // what does this line do?
+            }
+            //closes the for loop<>
+            // |
+            // what does this line do?
         }
+        print("messageForURL: \(messageForURL)")
+        
+        let apiToContact = "https://www.googleapis.com/language/translate/v2?key=AIzaSyDDTV4qnVy3CK0CwtXLG0h1HYrtKmIWM8c&q=\(messageForURL)&source=es&target=en"
+        
+        print("apiToContact: \(apiToContact)")
+        print("-------------------")
+        var data = ""
+        // This code will call the google translate api
+        Alamofire.request(.GET, apiToContact).validate().responseJSON() { response in
+            switch response.result {
+                
+            case .Success:
+                if let value = response.result.value {
+                    let json = JSON(value)
+                    print(json)
+                    
+                    data = json["data"]["translations"][0]["translatedText"].stringValue
+                    
+                    print("Data is : " + data)
+                    
+                    let ref = FIRDatabase.database().reference().child("messages")
+                    let childRef = ref.childByAutoId()
+                    let toId = self.user!.id!
+                    let fromId = FIRAuth.auth()!.currentUser!.uid
+                    let timestamp: NSNumber = Int(NSDate().timeIntervalSince1970)
+                    
+                    var values: [String: AnyObject] = ["toId": toId, "fromId": fromId, "timestamp": timestamp, "text": data]
+                    JSQSystemSoundPlayer.jsq_playMessageReceivedAlert()
+
+                    
+                    //append properties dictionary onto values somehow??
+                    //key $0, value $1
+//                    properties.forEach({values[$0] = $1})
+                    
+                    childRef.updateChildValues(values) { (error, ref) in
+                        if error != nil {
+                            print(error)
+                            return
+                            
+                        }
+                        
+                        
+                        self.inputTextField.text = nil
+                        
+                        let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId).child(toId)
+                        
+                        
+                        let messageId = childRef.key
+                        userMessagesRef.updateChildValues([messageId: 1])
+                        
+                        let recipientUserMessagesRef = FIRDatabase.database().reference().child("user-messages").child(toId).child(fromId)
+                        recipientUserMessagesRef.updateChildValues([messageId: 1])
+                        //                translateEnglish()
+                        
+                    }
+
+                }
+            case .Failure:
+                print("failed")
+                
+            }
+        }
+        
+        
+        
+        
     }
-    
+    func translateToEnglish(){
+       
+        let  text = inputTextField.text
+        //let date = NSDate()
+        let message = inputTextField.text?.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+        // what does this line do?
+        var messageForURL = ""
+        //        does a for loop duhhhhhhh
+        //         what does this line do?
+        print(text)
+        for character in message!.characters {
+            // what does this line do?
+            if character == " " {
+                // literally gives %20 cause that stands for a space in a url link
+                // what does this line do?
+                messageForURL += "%20"
+                // what does this line do?
+            }
+                // what does this line do?
+            else {
+                //append means to add to the chars
+                // what does this line do?
+                messageForURL.append(character)
+                // what does this line do?
+            }
+            //closes the for loop<>
+            // |
+            // what does this line do?
+        }
+        print("messageForURL: \(messageForURL)")
+        
+        let apiToContact = "https://www.googleapis.com/language/translate/v2?key=AIzaSyDDTV4qnVy3CK0CwtXLG0h1HYrtKmIWM8c&q=\(messageForURL)&source=en&target=es"
+        
+        print("apiToContact: \(apiToContact)")
+        print("-------------------")
+        var data = ""
+        // This code will call the google translate api
+        Alamofire.request(.GET, apiToContact).validate().responseJSON() { response in
+            switch response.result {
+                
+            case .Success:
+                if let value = response.result.value {
+                    let json = JSON(value)
+                    print(json)
+                    
+                    data = json["data"]["translations"][0]["translatedText"].stringValue
+                    
+                    print("Data is : " + data)
+                    
+                    let ref = FIRDatabase.database().reference().child("messages")
+                    let childRef = ref.childByAutoId()
+                    let toId = self.user!.id!
+                    let fromId = FIRAuth.auth()!.currentUser!.uid
+                    let timestamp: NSNumber = Int(NSDate().timeIntervalSince1970)
+                    
+                    var values: [String: AnyObject] = ["toId": toId, "fromId": fromId, "timestamp": timestamp, "text": data]
+                    JSQSystemSoundPlayer.jsq_playMessageSentSound()
+                    
+                    //append properties dictionary onto values somehow??
+                    //key $0, value $1
+//                    properties.forEach({values[$0] = $1})
+                    
+                    childRef.updateChildValues(values) { (error, ref) in
+                        if error != nil {
+                            print(error)
+                            return
+                            
+                            
+                        }
+//                        func push(application: UIApplication, didRecievePushNotifications data: [String : AnyObject], fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+//                            var values: [String : AnyObject] = ["text": data]
+//                                 // Let FCM know about the message for analytics etc.
+//                                  FIRMessaging.messaging().appDidReceiveMessage(data)
+//                                  // handle your message
+//                            
+//                              }
+
+                        
+                        
+                        self.inputTextField.text = nil
+                        
+                        let userMessagesRef = FIRDatabase.database().reference().child("user-messages").child(fromId).child(toId)
+                        
+                        
+                        let messageId = childRef.key
+                        userMessagesRef.updateChildValues([messageId: 1])
+                        
+                        let recipientUserMessagesRef = FIRDatabase.database().reference().child("user-messages").child(toId).child(fromId)
+                        recipientUserMessagesRef.updateChildValues([messageId: 1])
+                        //                translateEnglish()
+                        
+                    }
+                    
+                    
+                }
+            case .Failure:
+                print("failed")
+                
+            }
+        }
+        
+        
+        
+        
+    }
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         handleSend()
         return true
+        
+            
+        }
+        
     }
-}
 
 
-
-
-
-
-
-
+    
 
 
 

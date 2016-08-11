@@ -1,11 +1,3 @@
-//
-//  NewMessageController.swift
-//  gameofchats
-//
-//  Created by Brian Voong on 6/29/16.
-//  Copyright © 2016 letsbuildthatapp. All rights reserved.
-//
-
 import UIKit
 import Firebase
 
@@ -17,7 +9,7 @@ class NewMessageController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.tableView.backgroundColor = UIColor.blueColor()
         navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Cancel", style: .Plain, target: self, action: #selector(handleCancel))
         
         tableView.registerClass(UserCell.self, forCellReuseIdentifier: cellId)

@@ -1,11 +1,3 @@
-//
-//  LoginController+handlers.swift
-//  gameofchats
-//
-//  Created by Brian Voong on 7/4/16.
-//  Copyright © 2016 letsbuildthatapp. All rights reserved.
-//
-
 import UIKit
 import Firebase
 
@@ -48,6 +40,10 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                         self.registerUserIntoDatabaseWithUID(uid, values: values)
                     }
                 })
+            }else{
+                let values = ["name": name, "email": email]
+                
+                self.registerUserIntoDatabaseWithUID(uid, values: values)
             }
         })
     }

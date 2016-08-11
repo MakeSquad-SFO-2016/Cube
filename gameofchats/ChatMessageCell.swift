@@ -1,11 +1,3 @@
-//
-//  ChatMessageCell.swift
-//  gameofchats
-//
-//  Created by Brian Voong on 7/12/16.
-//  Copyright © 2016 letsbuildthatapp. All rights reserved.
-//
-
 import UIKit
 
 class ChatMessageCell: UICollectionViewCell {
@@ -72,7 +64,6 @@ class ChatMessageCell: UICollectionViewCell {
         profileImageView.bottomAnchor.constraintEqualToAnchor(self.bottomAnchor).active = true
         profileImageView.widthAnchor.constraintEqualToConstant(32).active = true
         profileImageView.heightAnchor.constraintEqualToConstant(32).active = true
-        
         //x,y,w,h
         
             bubbleViewRightAnchor = bubbleView.rightAnchor.constraintEqualToAnchor(self.rightAnchor, constant: -8)

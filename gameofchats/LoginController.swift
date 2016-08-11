@@ -1,10 +1,3 @@
-//
-//  LoginController.swift
-//  gameofchats
-//
-//  Created by Brian Voong on 6/24/16.
-//  Copyright © 2016 letsbuildthatapp. All rights reserved.
-//
 
 import UIKit
 import Firebase
@@ -24,7 +17,7 @@ class LoginController: UIViewController {
     
     lazy var loginRegisterButton: UIButton = {
         let button = UIButton(type: .System)
-        button.backgroundColor = UIColor(r: 80, g: 101, b: 161)
+        button.backgroundColor = UIColor(r: 45, g: 209, b: 135)
         button.setTitle("Register", forState: .Normal)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitleColor(UIColor.whiteColor(), forState: .Normal)
@@ -75,7 +68,7 @@ class LoginController: UIViewController {
     
     let nameSeparatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        view.backgroundColor = UIColor.redColor()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -89,7 +82,7 @@ class LoginController: UIViewController {
     
     let emailSeparatorView: UIView = {
         let view = UIView()
-        view.backgroundColor = UIColor(r: 220, g: 220, b: 220)
+        view.backgroundColor = UIColor.redColor()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -104,7 +97,7 @@ class LoginController: UIViewController {
     
     lazy var profileImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "gameofthrones_splash")
+        imageView.image = UIImage(named: "JohnsLogo(1).jpg")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .ScaleAspectFill
         
@@ -146,8 +139,8 @@ class LoginController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        view.backgroundColor = UIColor(r: 61, g: 91, b: 151)
+        
+        view.backgroundColor = UIColor(r: 81, g: 169, b: 143)
         
         view.addSubview(inputsContainerView)
         view.addSubview(loginRegisterButton)
@@ -166,6 +159,7 @@ class LoginController: UIViewController {
         loginRegisterSegmentedControl.bottomAnchor.constraintEqualToAnchor(inputsContainerView.topAnchor, constant: -12).active = true
         loginRegisterSegmentedControl.widthAnchor.constraintEqualToAnchor(inputsContainerView.widthAnchor, multiplier: 1).active = true
         loginRegisterSegmentedControl.heightAnchor.constraintEqualToConstant(36).active = true
+        
     }
     
     func setupProfileImageView() {
@@ -252,7 +246,6 @@ extension UIColor {
     convenience init(r: CGFloat, g: CGFloat, b: CGFloat) {
         self.init(red: r/255, green: g/255, blue: b/255, alpha: 1)
     }
-    
 }
 
 

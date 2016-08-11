@@ -1,10 +1,3 @@
-//
-//  UserCell.swift
-//  gameofchats
-//
-//  Created by Brian Voong on 7/8/16.
-//  Copyright © 2016 letsbuildthatapp. All rights reserved.
-//
 
 import UIKit
 import Firebase
