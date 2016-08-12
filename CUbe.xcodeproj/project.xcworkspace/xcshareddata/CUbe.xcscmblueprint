@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "041669095B4ED5252CA507726C21076BF644C5AF",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "041669095B4ED5252CA507726C21076BF644C5AF" : 0,
+    "F106C0607ACF61D7D2D4291BE83D83CFCEB994BD" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "4384C4DD-DCCD-4663-9131-6A1A26901732",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "041669095B4ED5252CA507726C21076BF644C5AF" : "Main%20Cube\/",
+    "F106C0607ACF61D7D2D4291BE83D83CFCEB994BD" : "Main%20Cube\/gameofchats\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "CUbe",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "CUbe.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/MakeSquad-SFO-2016\/Cube.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "041669095B4ED5252CA507726C21076BF644C5AF"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/johnmontewhat\/Cube-App-Store.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F106C0607ACF61D7D2D4291BE83D83CFCEB994BD"
+    }
+  ]
+}
