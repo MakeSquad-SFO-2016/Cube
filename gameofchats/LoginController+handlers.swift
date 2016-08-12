@@ -38,6 +38,7 @@ extension LoginController: UIImagePickerControllerDelegate, UINavigationControll
                         let values = ["name": name, "email": email, "profileImageUrl": profileImageUrl]
                         
                         self.registerUserIntoDatabaseWithUID(uid, values: values)
+                        
                     }
                 })
             }else{
