@@ -326,9 +326,13 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         let properties: [String: AnyObject] = ["imageUrl": imageUrl, "imageWidth": image.size.width, "imageHeight": image.size.height]
         sendMessageWithProperties(properties)
     }
+    
     private func sendMessageWithProperties(properties: [String: AnyObject]) {
-        let escape = ["á" : "a"]
-        let Eescape = ["é" : "e"]
+        
+            
+
+//        let escape = ["á" : "a"]
+//        let Eescape = ["é" : "e"]
         let  text = inputTextField.text
         //let date = NSDate()
         let message = inputTextField.text?.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
@@ -426,10 +430,40 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
     }
     func translateToEnglish(){
-       
+        //emojifying code
+//        if inputTextField.text == "up" || inputTextField.text == "Up" || inputTextField.text == "arriba" || inputTextField.text == "Arriba" || inputTextField.text == "high" || inputTextField.text == "High" {
+//            inputTextField.text = "⬆️"
+//        }
+//        if inputTextField.text == "Burger" || inputTextField.text == "burger"{
+//            inputTextField.text = "🍔"
+//        }
+//        
+//        if inputTextField.text == "sleep"{
+//            inputTextField.text = "😴💤"
+//        }
+        
+        
+
+        
+        
+        
+        
+    
         let  text = inputTextField.text
-        //let date = NSDate()
+        if inputTextField.text == "up" || inputTextField.text == "Up" || inputTextField.text == "arriba" || inputTextField.text == "Arriba" || inputTextField.text == "high" || inputTextField.text == "High" {
+            inputTextField.text = "⬆️"
+        }
+        if inputTextField.text == "Burger" || inputTextField.text == "burger"{
+            inputTextField.text = "🍔"
+        }
+        
+        if inputTextField.text == "sleep"{
+            inputTextField.text = "😴💤"
+        }
+
+              //let date = NSDate()
         let message = inputTextField.text?.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+        
         // what does this line do?
         var messageForURL = ""
         //        does a for loop duhhhhhhh
@@ -454,6 +488,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             // |
             // what does this line do?
         }
+        
+
         print("messageForURL: \(messageForURL)")
         
         let apiToContact = "https://www.googleapis.com/language/translate/v2?key=AIzaSyDDTV4qnVy3CK0CwtXLG0h1HYrtKmIWM8c&q=\(messageForURL)&source=en&target=es"
@@ -531,7 +567,8 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
     }
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        handleSend()
+        
+               handleSend()
         return true
         
             
@@ -540,7 +577,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
     }
 
 
-    
 
 
 
