@@ -461,7 +461,6 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             inputTextField.text = "😴💤"
         }
 
-              //let date = NSDate()
         let message = inputTextField.text?.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         
         // what does this line do?
