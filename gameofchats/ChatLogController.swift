@@ -344,6 +344,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         if inputTextField.text == "sleep" || inputTextField.text == "Sleep" || inputTextField.text == "night" || inputTextField.text == "Night" {
             inputTextField.text = "😴💤"
         }
+        if inputTextField.text == "100"{
+            inputTextField.text = "💯"
+        }
 
         let message = inputTextField.text?.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         
@@ -469,6 +472,9 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
         
         if inputTextField.text == "sleep" || inputTextField.text == "Sleep" || inputTextField.text == "night" || inputTextField.text == "Night" {
             inputTextField.text = "😴💤"
+        }
+        if inputTextField.text == "100"{
+        inputTextField.text = "💯"
         }
 
         let message = inputTextField.text?.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
