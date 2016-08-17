@@ -334,7 +334,17 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
 //        let escape = ["á" : "a"]
 //        let Eescape = ["é" : "e"]
         let  text = inputTextField.text
-        //let date = NSDate()
+        if inputTextField.text == "up" || inputTextField.text == "Up" || inputTextField.text == "arriba" || inputTextField.text == "Arriba" || inputTextField.text == "high" || inputTextField.text == "High" {
+            inputTextField.text = "⬆️"
+        }
+        if inputTextField.text == "Burger" || inputTextField.text == "burger"{
+            inputTextField.text = "🍔"
+        }
+        
+        if inputTextField.text == "sleep" || inputTextField.text == "Sleep" || inputTextField.text == "night" || inputTextField.text == "Night" {
+            inputTextField.text = "😴💤"
+        }
+
         let message = inputTextField.text?.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
         
         // what does this line do?
@@ -457,7 +467,7 @@ class ChatLogController: UICollectionViewController, UITextFieldDelegate, UIColl
             inputTextField.text = "🍔"
         }
         
-        if inputTextField.text == "sleep"{
+        if inputTextField.text == "sleep" || inputTextField.text == "Sleep" || inputTextField.text == "night" || inputTextField.text == "Night" {
             inputTextField.text = "😴💤"
         }
 
