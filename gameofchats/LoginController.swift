@@ -1,8 +1,10 @@
+// let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: "dismissKeyboard")
+//view.addGestureRecognizer(tap)
 
 import UIKit
 import Firebase
 
-class LoginController: UIViewController {
+class LoginController: UIViewController, UITextFieldDelegate{
     
     var messagesController: MessagesController?
     
@@ -37,7 +39,8 @@ class LoginController: UIViewController {
     }
     
     func handleLogin() {
-        guard let email = emailTextField.text, password = passwordTextField.text else {
+        
+        guard let email = emailTextField.text, let password = passwordTextField.text else {
             print("Form is not valid")
             return
         }
@@ -63,6 +66,7 @@ class LoginController: UIViewController {
         let tf = UITextField()
         tf.placeholder = "Name"
         tf.translatesAutoresizingMaskIntoConstraints = false
+        
         return tf
     }()
     
@@ -139,7 +143,7 @@ class LoginController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.nameTextField.delegate = self
         view.backgroundColor = UIColor(r: 81, g: 169, b: 143)
         
         view.addSubview(inputsContainerView)
@@ -151,6 +155,9 @@ class LoginController: UIViewController {
         setupLoginRegisterButton()
         setupProfileImageView()
         setupLoginRegisterSegmentedControl()
+    }
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
     func setupLoginRegisterSegmentedControl() {
